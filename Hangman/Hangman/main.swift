@@ -71,7 +71,75 @@ func gameLoop () {
         return buildingTheWord
     }
     
-    print(" Let's play hangman!" )
+    func allOfHangman(){
+        print(" ______")
+        print(" \u{2502}    \u{2502}")
+        print(" \u{2502}     \u{20DD} ")
+        
+        print(" \u{2502}   \u{2501}\u{2503}\u{2501}")
+        
+        print(" \u{2502}   \u{0283} \u{0285}")
+        print("---")
+    }
+    
+    
+    func head(){
+        print(" ______")
+        print(" \u{2502}    \u{2502}")
+        print(" \u{2502}     \u{20DD} ")
+        
+        print(" \u{2502}   ")
+        
+        print(" \u{2502}   ")
+        print("---")
+    }
+    
+    func body(){
+        print(" ______")
+        print(" \u{2502}    \u{2502}")
+        print(" \u{2502}     \u{20DD} ")
+        
+        print(" \u{2502}    \u{2503}")
+        
+        print(" \u{2502}   ")
+        print("---")
+    }
+    
+    func bodyAndLeftArm(){
+        print(" ______")
+        print(" \u{2502}    \u{2502}")
+        print(" \u{2502}     \u{20DD} ")
+        
+        print(" \u{2502}   \u{2501}\u{2503}")
+        
+        print(" \u{2502}   ")
+        print("---")
+    }
+    
+    func bodyAndBothArms(){
+        print(" ______")
+        print(" \u{2502}    \u{2502}")
+        print(" \u{2502}     \u{20DD} ")
+        
+        print(" \u{2502}   \u{2501}\u{2503}\u{2501}")
+        
+        print(" \u{2502}   ")
+        print("---")
+    }
+    
+    func bodyArmsAndLeftLeg(){
+        print(" ______")
+        print(" \u{2502}    \u{2502}")
+        print(" \u{2502}     \u{20DD} ")
+        
+        print(" \u{2502}   \u{2501}\u{2503}\u{2501}")
+        
+        print(" \u{2502}   \u{0283} ")
+        print("---")
+    }
+
+    
+    print(" Let's play Hangman!" )
     sleep(1)
     print("Can you guess the word?")
     sleep(1)
@@ -85,13 +153,48 @@ func gameLoop () {
                 holdsAllGuesses.insert(guess)
                 correctGuesses += 1
                 _ = updateBuildingTheWord(currentLetter: guess)
+                print("")
                 buildStrFromArr(arr: buildingTheWord)
-                print(" You have \(maxIncorrectGuesses - incorrectGuesses) guesses left" )
+                print("")
+                if (maxIncorrectGuesses - incorrectGuesses) == 1 && buildingTheWord.contains("") {
+                    print(" You have \(maxIncorrectGuesses - incorrectGuesses) guess left")
+                    print(" Letters Used:", holdsAllGuesses)
+                    print("")
+                } else  if buildingTheWord.contains("") {
+                    print(" You have \(maxIncorrectGuesses - incorrectGuesses) guesses left" )
+                    print(" Letters Used:", holdsAllGuesses)
+                    print("")
+                }
+                
             } else {
                 holdsAllGuesses.insert(guess)
                 incorrectGuesses += 1
-                print("Sorry! You have \(maxIncorrectGuesses - incorrectGuesses) guesses left. Try again!")
+            
+                switch incorrectGuesses {
+                case 1:
+                    head()
+                case 2:
+                    body()
+                case 3:
+                    bodyAndLeftArm()
+                case 4:
+                    bodyAndBothArms()
+                case 5:
+                    bodyArmsAndLeftLeg()
+                default:
+                    allOfHangman()
+                }
+                if (maxIncorrectGuesses - incorrectGuesses) == 0 {
+                    print("Sorry! You ran out of guesses. ")
+                } else if (maxIncorrectGuesses - incorrectGuesses) == 1{
+                    print("Sorry! You have \(maxIncorrectGuesses - incorrectGuesses) guess left. Try again!")
+                } else {
+                    print("Sorry! You have \(maxIncorrectGuesses - incorrectGuesses) guesses left. Try again!")
+                }
+                print(" Letters Used:", holdsAllGuesses)
+                print("")
                 buildStrFromArr(arr: buildingTheWord)
+                print("")
             }
         } else {
             print("That letter was already chosen. Try again!")
@@ -101,12 +204,10 @@ func gameLoop () {
     }
 
     if !buildingTheWord.contains("") {
-        print("")
         sleep(1)
         print("Congrats! You Won! It only took \(incorrectGuesses + correctGuesses) guesses!")
         buildStrFromArr(arr: buildingTheWord )
     } else {
-        print("")
         sleep(1)
         print("Better Luck Next Time!")
         sleep(1)
